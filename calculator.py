@@ -12,43 +12,33 @@ class Calculator:
         for i in range(b):
             result = self.add(result, a)
         if negative:
-            temp_result = 0
-            for _ in range(abs(result)):
-                temp_result = self.add(temp_result, -1)
-            result = temp_result
-        
+            result = -result
         return result
 
     def divide(self, a, b):
         result = 0
         negative = (a > 0) != (b > 0)
-        checkZero = (a == 0)
         a, b = abs(a), abs(b)
         if (a == 0) or (b == 0):
             result = 0
-        else: 
-            while a > b:
+        else:
+            while a >= b:
                 a = self.subtract(a, b)
-                result += 1
-            result += 1
+                result = self.add(result, 1)
         if negative:
-            temp_result = 0
-            for _ in range(abs(result)):
-                temp_result = self.add(temp_result, -1)
-            result = temp_result
+            result = self.multiply(result, -1)
         return result
     
     def modulo(self, a, b):
-        while abs(a) >= abs(b):
-            a = a - b
-        if a < 0 and b > 0:
-            while a < 0:
-                a = a + b
-        elif a > 0 and b < 0:
-            while a > 0:
-                a = a + b
-        return a
-
+        result = abs(a)
+        divisor = abs(b)
+        while result >= divisor:
+            result = self.subtract(result, divisor)
+        if a < 0:
+            result = -result
+        if (a < 0 and b > 0) or (a > 0 and b < 0):
+            result = self.add(result, b)
+        return result
 
 # Example usage:
 if __name__ == "__main__":
@@ -59,4 +49,3 @@ if __name__ == "__main__":
     print("Example: multiplication: ", calc.multiply(2, 3))
     print("Example: division: ", calc.divide(10, 2))
     print("Example: modulo: ", calc.modulo(10, 3))
-    print("Example: modulo: ", calc.modulo(3, -2))

@@ -9,36 +9,42 @@ class Calculator:
         result = 0
         negative = (a > 0) != (b > 0)
         a, b = abs(a), abs(b)
-        for i in range(b):
+        for _ in range(b):
             result = self.add(result, a)
         if negative:
-            result = -result
+            result = self.subtract(0, result)
         return result
 
     def divide(self, a, b):
+        if b == 0:
+            raise ValueError("Cannot divide by zero")
+        
         result = 0
         negative = (a > 0) != (b > 0)
         a, b = abs(a), abs(b)
-        if (a == 0) or (b == 0):
-            result = 0
-        else:
-            while a >= b:
-                a = self.subtract(a, b)
-                result = self.add(result, 1)
+        
+        while a >= b:
+            a = self.subtract(a, b)
+            result = self.add(result, 1)
+        
         if negative:
-            result = self.multiply(result, -1)
+            result = self.subtract(0, result)
         return result
-    
+
     def modulo(self, a, b):
+        if b == 0:
+            raise ValueError("Cannot perform modulo by zero")
+        
         result = abs(a)
         divisor = abs(b)
+        
         while result >= divisor:
             result = self.subtract(result, divisor)
+        
         if a < 0:
-            result = -result
-        if (a < 0 and b > 0) or (a > 0 and b < 0):
-            result = self.add(result, b)
+            result = self.subtract(0, result)
         return result
+
 
 # Example usage:
 if __name__ == "__main__":
